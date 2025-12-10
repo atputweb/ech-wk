@@ -59,14 +59,16 @@ try:
                                   QHBoxLayout, QLabel, QLineEdit, QPushButton, 
                                   QComboBox, QTextEdit, QCheckBox, QGroupBox, 
                                   QMessageBox, QInputDialog, QSystemTrayIcon, QMenu, QAction)
-    from PyQt5.QtCore import Qt, QThread, pyqtSignal, qRegisterMetaType
+    from PyQt5.QtCore import Qt, QThread, pyqtSignal
     from PyQt5.QtGui import QIcon, QTextCursor
     HAS_PYQT = True
     
     # 注册 QTextCursor 类型以避免信号槽错误
     try:
+        from PyQt5.QtCore import qRegisterMetaType
         qRegisterMetaType('QTextCursor')
-    except:
+    except (ImportError, AttributeError):
+        # qRegisterMetaType 在某些 PyQt5 版本中可能不可用，忽略
         pass
     
     # 高 DPI 支持 - 必须在创建 QApplication 之前设置
@@ -80,7 +82,7 @@ except ImportError:
     print("安装命令: pip3 install PyQt5")
     sys.exit(1)
 
-APP_VERSION = "1.4"
+APP_VERSION = "1.3"
 APP_TITLE = f"ECH Workers 客户端 v{APP_VERSION}"
 
 # 中国IP列表URL
